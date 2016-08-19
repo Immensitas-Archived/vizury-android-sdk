@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.vizury.hellovizury" >
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <permission android:name="com.vizury.hellovizury.permission.C2D_MESSAGE"
+                android:protectionLevel="signature"/>
+    <uses-permission android:name="com.vizury.hellovizury.permission.C2D_MESSAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.vizury.hellovizury" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.vizury.mobile.Push.VizGcmService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.vizury.mobile.Push.VizInstanceIDListener"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name="com.vizury.mobile.Push.VizIntentService"
+            android:exported="false" />
+
+        <!--Put packages id received from vizury account manager-->
+        <meta-data
+            android:name="Vizury.VRM_ID"
+            android:value="1" />
+        <!--Put server url received from vizury account manager-->
+        <meta-data
+            android:name="Vizury.SERVER_URL"
+            android:value="https://www.vizury.com/analyze/analyze.php" />
+        <!--the PROJECT_ID obtained from google developer console-->
+        <meta-data
+            android:name="Vizury.PROJECT_ID"
+            android:value="id:311225985873" />
+        <!--drawable resource for notification icon-->
+        <meta-data
+            android:name="Vizury.NOTIFICATION_ICON"
+            android:resource="@mipmap/ic_launcher" />
+        <!-- drawable resource for small notification icon that will appear in notification bar -->
+        <meta-data
+            android:name="Vizury.NOTIFICATION_ICON_SMALL"
+            android:resource="@mipmap/ic_launcher" />
+       <!--- set to true for developer mode. Change to false once going to production -->
+        <meta-data
+            android:name="Vizury.DEBUG_MODE"
+            android:value="true" />
+
+    </application>
+
+</manifest>

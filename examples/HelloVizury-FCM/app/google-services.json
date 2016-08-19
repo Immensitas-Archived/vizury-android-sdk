@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "113645685262",
+    "firebase_url": "https://hellovizury-fcm.firebaseio.com",
+    "project_id": "hellovizury-fcm",
+    "storage_bucket": "hellovizury-fcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113645685262:android:233e440003567d84",
+        "android_client_info": {
+          "package_name": "com.vizury.hellovizuryfcm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113645685262-92b8ck3mv57r2jc4if5eh1ucp619pivn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAkXZE4PwH0SvtyfPiXleXLkLi-md7BsE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
