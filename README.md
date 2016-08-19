@@ -21,7 +21,12 @@
   	* [Getting registered gcm token] (#get-token)
 
 ## <a id="example-app"></a>Example app
-Android/examples/HelloVizury contains an example app. You can open the Android project to see an example on how the Vizury SDK can be integrated.
+
+Examples on how the Vizury SDK can be integrated.
+
+`examples/HelloVizury` is a sample app having a basic integration with vizury SDK.
+
+`examples/HelloVizury-FCM` is a sample app having FCM based integration with vizury SDK.
 
 
 ## <a id="basic-integration"></a>Basic Integration
