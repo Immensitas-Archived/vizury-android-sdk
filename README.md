@@ -1,4 +1,4 @@
-![Vizury Logo](https://github.com/vizury/vizury-sdk/blob/master/VizuryLogo.png)
+![Vizury Logo](https://github.com/vizury/vizury-android-sdk/blob/master/VizuryLogo.png)
 ## Summary
  This is Android SDK integration guide.
  
