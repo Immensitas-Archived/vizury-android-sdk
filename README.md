@@ -41,7 +41,7 @@ repositories {
 Add the following dependency in your build.gradle file under app module
 
 ```
-compile 'com.vizury.mobile:VizurySDK:5.4.3'
+compile 'com.vizury.mobile:VizurySDK:5.5.0'
 ```
 
 ### <a id="gps-get"></a>Add Google Play Services
