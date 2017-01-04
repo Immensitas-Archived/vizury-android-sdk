@@ -39,6 +39,9 @@
             </intent-filter>
         </service>
 
+        <service android:name=".FCMTokenReader"
+            android:exported="false"/>
+
         <service
             android:name="com.vizury.mobile.Push.VizIntentService"
             android:exported="false" />

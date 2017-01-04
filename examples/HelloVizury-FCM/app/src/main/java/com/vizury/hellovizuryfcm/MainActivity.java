@@ -1,8 +1,13 @@
 package com.vizury.hellovizuryfcm;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.vizury.mobile.AttributeBuilder;
 import com.vizury.mobile.VizuryHelper;
 
@@ -16,7 +21,15 @@ public class MainActivity extends AppCompatActivity {
         // initialize the VizuryHelper. Ensure that you have added
         // services, receivers, permissions and the Meta Tags with correct values.
         VizuryHelper.getInstance(getApplicationContext()).init();
-//        exampleAppEvent();
+
+        // read the fcm token from shared preference to be passed to vizury,
+        // if not present then start an intent service to get the token.
+        SharedPreferences sharedPreferences	=	getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,0);
+        String fcmToken = sharedPreferences.getString(Constants.PREFS_FCM_TOKEN, null);
+        if(fcmToken == null)
+            startService(new Intent(this,FCMTokenReader.class));
+        else
+            VizuryHelper.getInstance(getApplicationContext()).setGCMToken(fcmToken);
     }
 
     /**
