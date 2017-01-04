@@ -277,7 +277,7 @@ protected void onCreate(Bundle savedInstanceState) {
     //your code
 }
 ```
-`Note: onTokenRefresh of FirebaseInstanceIdService may not be called when your app is updated from the play store. So if you are already using FCM and integrating the vizury SDK then FCM token may not be passed to vizury. For this read the token from shared preference, and id the token is not present in shared Preference then we will start an intent service` [FCMTokenReader][FCMTokenReader] `which will read the fcm token and store it in shared preference.`
+`Note: onTokenRefresh of FirebaseInstanceIdService may not be called when your app is updated from the play store. So if you are already using FCM and integrating the vizury SDK then FCM token may not be passed to vizury. For this read the token from shared preference, and if the token is not present in shared Preference then we will start an intent service` [FCMTokenReader][FCMTokenReader] `which will read the fcm token and store it in shared preference.`
 
 e) Pass the FCM token to vizury when onTokenRefresh is called. Make sure you save the token in shared preference.
 
