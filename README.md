@@ -52,7 +52,8 @@ uniquely identify devices. To allow the vizury SDK to use the Google Advertising
 
 Open the build.gradle file of your app and find the dependencies block. Add the following line:
 ```
-compile 'com.google.android.gms:play-services:9.4.0'
+compile 'com.google.android.gms:play-services-base:9.4.0'
+compile 'com.google.android.gms:play-services-gcm:9.4.0'
 ```
 
 ### <a id="manifest-changes"></a>Manifest File Changes
