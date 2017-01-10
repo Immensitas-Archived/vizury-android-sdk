@@ -273,18 +273,13 @@ protected void onCreate(Bundle savedInstanceState) {
 ```
 `Note: onTokenRefresh of FirebaseInstanceIdService may not be called when your app is updated from the play store. So if you are already using FCM and integrating the vizury SDK then FCM token may not be passed to vizury. For this start an IntentService like `[FCMTokenReader][FCMTokenReader] `which will get the FCM token and send it to vizury`
 
-e) Pass the FCM token to vizury when onTokenRefresh is called. Make sure you save the token in shared preference.
+e) Pass the FCM token to vizury when onTokenRefresh is called.
 
 ```java
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-	// save the fcm token in shared preference
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, 0);
-        SharedPreferences.Editor editor	= sharedPreferences.edit();
-        editor.putString(Constants.PREFS_FCM_TOKEN, refreshedToken);
-        editor.apply();
         // pass the refreshed token to vizury
         VizuryHelper.getInstance(getApplicationContext()).setGCMToken(refreshedToken);
     }
