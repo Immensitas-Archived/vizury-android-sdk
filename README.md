@@ -266,31 +266,20 @@ import com.vizury.mobile.VizuryHelper;
 protected void onCreate(Bundle savedInstanceState) {
     //your code         
     VizuryHelper.getInstance(getApplicationContext()).init();
-    // read the fcm token from shared preference to be passed to vizury,
-    // if not present then start an intent service to get the token.
-    SharedPreferences sharedPreferences	=	getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,0);
-    String fcmToken = sharedPreferences.getString(Constants.PREFS_FCM_TOKEN, null);
-    if(fcmToken == null)
-        startService(new Intent(this,FCMTokenReader.class));
-    else
-        VizuryHelper.getInstance(getApplicationContext()).setGCMToken(fcmToken);    
+    // start an intent service to get the fcm token
+    startService(new Intent(this,FCMTokenReader.class));   
     //your code
 }
 ```
-`Note: onTokenRefresh of FirebaseInstanceIdService may not be called when your app is updated from the play store. So if you are already using FCM and integrating the vizury SDK then FCM token may not be passed to vizury. For this read the token from shared preference, and if the token is not present in shared Preference then we will start an intent service` [FCMTokenReader][FCMTokenReader] `which will read the fcm token and store it in shared preference.`
+`Note: onTokenRefresh of FirebaseInstanceIdService may not be called when your app is updated from the play store. So if you are already using FCM and integrating the vizury SDK then FCM token may not be passed to vizury. For this start an IntentService like `[FCMTokenReader][FCMTokenReader] `which will get the FCM token and send it to vizury`
 
-e) Pass the FCM token to vizury when onTokenRefresh is called. Make sure you save the token in shared preference.
+e) Pass the FCM token to vizury when onTokenRefresh is called.
 
 ```java
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-	// save the fcm token in shared preference
-        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, 0);
-        SharedPreferences.Editor editor	= sharedPreferences.edit();
-        editor.putString(Constants.PREFS_FCM_TOKEN, refreshedToken);
-        editor.apply();
         // pass the refreshed token to vizury
         VizuryHelper.getInstance(getApplicationContext()).setGCMToken(refreshedToken);
     }
