@@ -24,14 +24,6 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     public void onTokenRefresh() {
         // Get updated InstanceID token.
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-
-        // save the token in shared preference so that
-        // the fcm token can be retrieved if required
-        SharedPreferences sharedPreferences	=	getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, 0);
-        SharedPreferences.Editor editor	=	sharedPreferences.edit();
-        editor.putString(Constants.PREFS_FCM_TOKEN, refreshedToken);
-        editor.apply();
-
         // pass the refreshed token to vizury
         VizuryHelper.getInstance(getApplicationContext()).setGCMToken(refreshedToken);
         // TODO: Implement this method to send any registration to your app's servers.
