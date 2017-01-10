@@ -256,21 +256,49 @@ c) Add the below meta-tag in the manifest
 	android:value="true" />
 ```
 
-d) Make the following code changes
+d) Pass the FCM token to vizury after initializing vizury.
 
-`Pass the firebase messaging token to vizury`
+`In your MainActivity.java inside onCreate(Bundle SavedInstance) add following code snippet`
+
+```java
+import com.vizury.mobile.VizuryHelper;
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    //your code         
+    VizuryHelper.getInstance(getApplicationContext()).init();
+    // read the fcm token from shared preference to be passed to vizury,
+    // if not present then start an intent service to get the token.
+    SharedPreferences sharedPreferences	=	getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,0);
+    String fcmToken = sharedPreferences.getString(Constants.PREFS_FCM_TOKEN, null);
+    if(fcmToken == null)
+        startService(new Intent(this,FCMTokenReader.class));
+    else
+        VizuryHelper.getInstance(getApplicationContext()).setGCMToken(fcmToken);    
+    //your code
+}
+```
+`Note: onTokenRefresh of FirebaseInstanceIdService may not be called when your app is updated from the play store. So if you are already using FCM and integrating the vizury SDK then FCM token may not be passed to vizury. For this read the token from shared preference, and if the token is not present in shared Preference then we will start an intent service` [FCMTokenReader][FCMTokenReader] `which will read the fcm token and store it in shared preference.`
+
+e) Pass the FCM token to vizury when onTokenRefresh is called. Make sure you save the token in shared preference.
+
 ```java
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+	// save the fcm token in shared preference
+        SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, 0);
+        SharedPreferences.Editor editor	= sharedPreferences.edit();
+        editor.putString(Constants.PREFS_FCM_TOKEN, refreshedToken);
+        editor.apply();
         // pass the refreshed token to vizury
         VizuryHelper.getInstance(getApplicationContext()).setGCMToken(refreshedToken);
     }
 }
 ```
 
-`On receving any push message call the vizury api for checking and parsing the payload`
+f) On receving any push message call the vizury api for checking and parsing the payload
+
 ```java
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
@@ -358,3 +386,4 @@ VizuryHelper.getInstance(context).setGCMRegistrationListener(myListener);
 [style_icons]:			https://material.google.com/style/icons.html
 [GCM]:				https://developers.google.com/cloud-messaging/
 [firebase-link]:		https://firebase.google.com/docs/cloud-messaging/android/client
+[FCMTokenReader]:		https://github.com/vizury/vizury-android-sdk/blob/master/examples/HelloVizury-FCM/app/src/main/java/com/vizury/hellovizuryfcm/FCMTokenReader.java
