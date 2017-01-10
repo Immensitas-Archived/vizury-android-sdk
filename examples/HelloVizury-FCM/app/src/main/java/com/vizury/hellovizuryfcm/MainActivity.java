@@ -21,15 +21,8 @@ public class MainActivity extends AppCompatActivity {
         // initialize the VizuryHelper. Ensure that you have added
         // services, receivers, permissions and the Meta Tags with correct values.
         VizuryHelper.getInstance(getApplicationContext()).init();
-
-        // read the fcm token from shared preference to be passed to vizury,
-        // if not present then start an intent service to get the token.
-        SharedPreferences sharedPreferences	=	getSharedPreferences(Constants.SHARED_PREFERENCE_NAME,0);
-        String fcmToken = sharedPreferences.getString(Constants.PREFS_FCM_TOKEN, null);
-        if(fcmToken == null)
-            startService(new Intent(this,FCMTokenReader.class));
-        else
-            VizuryHelper.getInstance(getApplicationContext()).setGCMToken(fcmToken);
+        // start an intent service to get the fcm token
+        startService(new Intent(this,FCMTokenReader.class));
     }
 
     /**

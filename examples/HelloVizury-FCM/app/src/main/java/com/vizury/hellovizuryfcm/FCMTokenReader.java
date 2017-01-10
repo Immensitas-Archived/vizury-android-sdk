@@ -26,15 +26,10 @@ public class FCMTokenReader extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
         String fcmToken = FirebaseInstanceId.getInstance().getToken();
-
-        // save the fcm token in shared preference
-        SharedPreferences sharedPreferences	=	getSharedPreferences(Constants.SHARED_PREFERENCE_NAME, 0);
-        SharedPreferences.Editor editor	=	sharedPreferences.edit();
-        editor.putString(Constants.PREFS_FCM_TOKEN, fcmToken);
-        editor.apply();
-
         // pass the refreshed token to vizury
-        VizuryHelper.getInstance(getApplicationContext()).setGCMToken(fcmToken);
+        if(null != fcmToken)
+            VizuryHelper.getInstance(getApplicationContext()).setGCMToken(fcmToken);
     }
 }
