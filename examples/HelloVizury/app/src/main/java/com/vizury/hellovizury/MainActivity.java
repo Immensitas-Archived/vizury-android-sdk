@@ -2,21 +2,59 @@ package com.vizury.hellovizury;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.vizury.mobile.AttributeBuilder;
+import com.vizury.mobile.VizLog;
 import com.vizury.mobile.VizuryHelper;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static String TAG = "Vizury";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // initialize the VizuryHelper. Ensure that you have added
-        // services, receivers, permissions and the Meta Tags with correct values.
+
+        checkPlayServices();
         VizuryHelper.getInstance(getApplicationContext()).init();
+
+        Button eventButton = findViewById(R.id.eventButton);
+        eventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exampleAppEvent();
+            }
+        });
+
+        Button logTokenButton = findViewById(R.id.logTokenButton);
+        logTokenButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG,"gcm token is " + FirebaseInstanceId.getInstance().getToken());
+            }
+        });
+    }
+
+    public boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(getApplicationContext());
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, 2404).show();
+                Log.i(TAG,"Google play services error. Is user resolvable with resultcode " + resultCode);
+            } else {
+                Log.e(TAG, "This device is not supported.");
+            }
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -33,27 +71,5 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         VizuryHelper.getInstance(getApplicationContext()).logEvent("product page", builder);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
