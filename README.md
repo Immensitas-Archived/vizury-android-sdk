@@ -139,14 +139,14 @@ Create a FCM[fcm_console] project if you dont already have one. After creating y
 
 ### Add Firebase SDK
 
-a) Place the google-services.json that you had downloaded from the FCM console in the app module.
+a) Place the `google-services.json` that you had downloaded from the FCM console in the app module.
 
 ![add_google_services](https://github.com/vizury/vizury-android-sdk/blob/resources/add_google_services_json.png)
 
 
 b) Gradle changes
 
-Project-level build.gradle (<project>/build.gradle):
+Project-level build.gradle (`<project>/build.gradle`):
 
 ```
 buildscript {
@@ -156,7 +156,7 @@ buildscript {
   }
 }
 ```
-App-level build.gradle (<project>/<app-module>/build.gradle):
+App-level build.gradle (`<project>/<app-module>/build.gradle`):
 
 ```
 dependencies {
