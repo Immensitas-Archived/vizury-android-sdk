@@ -12,7 +12,7 @@
 	* [Vizury SDK Initialization](#sdk-init)
 	* [Event Logging](#event-logging)
   * [Push Notifications](#push-notifications)
-  	* [Enabling GCM](#enabling-gcm)
+  	* [Enabling FCM](#enabling-fcm)
   	* [Configuring Application](#config-app)
   * [Additional configurations] (#additional-config)
   	* [Offline caching](#offline-caching)
@@ -41,7 +41,7 @@ repositories {
 Add the following dependency in your build.gradle file under app module
 
 ```
-compile 'com.vizury.mobile:VizurySDK:5.5.0'
+implementation 'com.vizury.mobile:VizurySDK:6.0.0'
 ```
 
 ### <a id="gps-get"></a>Add Google Play Services
@@ -52,8 +52,8 @@ uniquely identify devices. To allow the vizury SDK to use the Google Advertising
 
 Open the build.gradle file of your app and find the dependencies block. Add the following line:
 ```
-    implementation 'com.google.android.gms:play-services-base:15.0.0'
-    implementation 'com.google.android.gms:play-services-ads:15.0.0'
+implementation 'com.google.android.gms:play-services-base:15.0.0'
+implementation 'com.google.android.gms:play-services-ads:15.0.0'
 ```
 
 ### <a id="manifest-changes"></a>Manifest File Changes
@@ -141,6 +141,37 @@ Create a FCM[fcm_console] project if you dont already have one. After creating y
 
 ## <a id="config-app"></a>Configuring Application
 
+### Add Firebase SDK
+
+#### Place the google-services.json that you had downloaded from the FCM console in the app module.
+
+#### Gradle changes
+
+Project-level build.gradle (<project>/build.gradle):
+
+```
+buildscript {
+  dependencies {
+    // Add this line
+    classpath 'com.google.gms:google-services:3.3.1'
+  }
+}
+```
+App-level build.gradle (<project>/<app-module>/build.gradle):
+
+```
+dependencies {
+  // Add this line
+  compile 'com.google.firebase:firebase-core:15.0.2'
+}
+...
+// Add to the bottom of the file
+apply plugin: 'com.google.gms.google-services'
+```
+
+
+### Manifest changes
+
 In the Package Explorer open the AndroidManifest.xml of your Android projectand and make the following changes
 
 Add the following meta-tags
@@ -153,7 +184,7 @@ Add the following meta-tags
 	android:resource="{NOTIFICATION_ICON_SMALL}" />
 ```
 
-`NOTIFICATION_ICON` is the icon tha come at the left of a notification
+`NOTIFICATION_ICON` is the icon that comes at the left of a notification
 
 `NOTIFICATION_ICON_SMALL` is the icon that comes at the notification bar. This should be white icon on a transparent background
 
@@ -162,19 +193,19 @@ Refer [Android Notifications][android_notifications] and [Style Icons][style_ico
 Add the following services for receiving the fcm token and messages.
 
 ```xml
-        <service
-            android:name="com.vizury.mobile.Push.VizFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
+<service
+	android:name="com.vizury.mobile.Push.VizFirebaseMessagingService">
+        <intent-filter>
+		<action android:name="com.google.firebase.MESSAGING_EVENT"/>
+	</intent-filter>
+</service>
 
-        <service
-            android:name="com.vizury.mobile.Push.VizFirebaseInstanceIdService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-            </intent-filter>
-        </service>
+<service
+	android:name="com.vizury.mobile.Push.VizFirebaseInstanceIdService">
+	<intent-filter>
+		<action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+	</intent-filter>
+</service>
 ```
 
 `Mandatory intent service for doing the heavy lifting`
@@ -209,46 +240,31 @@ b) Make the following code changes
 `Pass the FCM token to vizury. Make sure that you call this everytime FCM Token is refreshed` 
 
 ```java
-VizuryHelper.getInstance(context).setGCMToken(gcmToken)
+public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
+
+    @Override
+    public void onTokenRefresh() {
+	String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+	VizuryHelper.getInstance(context).setGCMToken(refreshedToken);
+	...
+    }	
 ```
 
 `On receving any push message call the vizury api for checking and parsing the payload`
 ```java
-public class MyGCMService extends GcmListenerService {
+public class MyFirebaseMessagingService extends FirebaseMessagingService {
 	@Override
-	public void onMessageReceived(String from, Bundle extras) {
-        	if (Utils.getInstance(getApplicationContext()).isPushFromVizury(extras))
-			PushHandler.getInstance(getApplicationContext()).handleNotificationReceived(extras);
+    	public void onMessageReceived(RemoteMessage message){
+	        Map data = message.getData();
+        	if (Utils.getInstance(getApplicationContext()).isPushFromVizury(data))
+			PushHandler.getInstance(getApplicationContext()).handleNotificationReceived(data);
         	else {
             		// your own logic goes here
         	}
     	}
 }
 ```
-    	
-### <a id="get-token"></a>Getting registered gcm token
 
-If you want to use the Vizury GCMListener service, for registering to GCM and listening to the GCM messages, but want to process them on your own, like handle push notification from other sources.
-
-a) Add the following meta data in the manifest file, replacing the macro with fully qualified service class name, that will handle and process the push notifications
-
-```xml
-<meta-data
-	android:name="Vizury.APP_GCM_SERVICE"
-	android:value="{GCM_SERVICE_CLASS_NAME}" />
-```
-        
-b) If you want the GCMToken after VizurySDK registered for GCM, you need to implement the GCMRegistrationListener of the sdk. This will give a callback to the listener whenever the gcm token in refreshed.
-    	
-```java
-GCMRegistrationListener myListener = new GCMRegistrationListener() {
-	@Override
-	public void onGCMRegistration(String gcmToken) {
-        	// handle the GCMToken passed
-        }
-};
-VizuryHelper.getInstance(context).setGCMRegistrationListener(myListener);
-```
         
 
 [google_ad_id]:                 https://support.google.com/googleplay/android-developer/answer/6048248?hl=en
