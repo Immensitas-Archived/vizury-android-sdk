@@ -1,4 +1,4 @@
-![Vizury Logo](https://github.com/vizury/vizury-android-sdk/blob/resources/VizuryLogo.png)
+![Vizury Logo](https://github.com/vizury/vizury-android-sdk/blob/android_oreo/resources/VizuryLogo.png)
 ## Summary
  This is Android SDK integration guide.
  
@@ -141,7 +141,7 @@ Create a FCM[fcm_console] project if you dont already have one. After creating y
 
 a) Place the `google-services.json` that you had downloaded from the FCM console in the app module.
 
-![add_google_services](https://github.com/vizury/vizury-android-sdk/blob/resources/add_google_services_json.png)
+![add_google_services](https://github.com/vizury/vizury-android-sdk/blob/android_oreo/resources/add_google_services_json.png)
 
 
 b) Gradle changes
@@ -171,7 +171,7 @@ apply plugin: 'com.google.gms.google-services'
 
 ### Manifest changes
 
-In the Package Explorer open the AndroidManifest.xml of your Android projectand and make the following changes
+In the Package Explorer open the AndroidManifest.xml of your Android project and and make the following changes
 
 Add the following meta-tags
 ```xml
