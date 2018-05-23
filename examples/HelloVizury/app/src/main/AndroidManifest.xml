@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/viz_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/viz_logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
@@ -48,11 +48,11 @@
         <!--drawable resource for notification icon-->
         <meta-data
             android:name="Vizury.NOTIFICATION_ICON"
-            android:resource="@drawable/push_icon" />
+            android:resource="@drawable/viz_logo" />
         <!-- drawable resource for small notification icon that will appear in notification bar -->
         <meta-data
             android:name="Vizury.NOTIFICATION_ICON_SMALL"
-            android:resource="@drawable/push_icon" />
+            android:resource="@drawable/viz_logo" />
         <!--- set to true for developer mode. Change to false once going to production -->
         <meta-data
             android:name="Vizury.DEBUG_MODE"
