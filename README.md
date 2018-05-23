@@ -1,4 +1,4 @@
-![Vizury Logo](https://github.com/vizury/vizury-android-sdk/blob/master/VizuryLogo.png)
+![Vizury Logo](https://github.com/vizury/vizury-android-sdk/blob/resources/VizuryLogo.png)
 ## Summary
  This is Android SDK integration guide.
  
@@ -16,17 +16,13 @@
   	* [Configuring Application](#config-app)
   * [Additional configurations] (#additional-config)
   	* [Offline caching](#offline-caching)
-  	* [FCM(Firebase cloud Messaging) Compatibility](#fcm)
-  	* [Controlling gcm registration and message handling](#gcm-handling)
-  	* [Getting registered gcm token] (#get-token)
+  	* [Controlling fcm registration and message handling](#fcm-handling)
 
 ## <a id="example-app"></a>Example app
 
 Examples on how the Vizury SDK can be integrated.
 
 `examples/HelloVizury` is a sample app having a basic integration with vizury SDK.
-
-`examples/HelloVizury-FCM` is a sample app having FCM based integration with vizury SDK.
 
 
 ## <a id="basic-integration"></a>Basic Integration
@@ -143,9 +139,12 @@ Create a FCM[fcm_console] project if you dont already have one. After creating y
 
 ### Add Firebase SDK
 
-#### Place the google-services.json that you had downloaded from the FCM console in the app module.
+a) Place the google-services.json that you had downloaded from the FCM console in the app module.
 
-#### Gradle changes
+![add_google_services](https://github.com/vizury/vizury-android-sdk/blob/resources/add_google_services_json.png)
+
+
+b) Gradle changes
 
 Project-level build.gradle (<project>/build.gradle):
 
