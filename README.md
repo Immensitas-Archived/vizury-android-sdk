@@ -52,20 +52,14 @@ uniquely identify devices. To allow the vizury SDK to use the Google Advertising
 
 Open the build.gradle file of your app and find the dependencies block. Add the following line:
 ```
-compile 'com.google.android.gms:play-services-base:9.4.0'
-compile 'com.google.android.gms:play-services-gcm:9.4.0'
+    implementation 'com.google.android.gms:play-services-base:15.0.0'
+    implementation 'com.google.android.gms:play-services-ads:15.0.0'
 ```
 
 ### <a id="manifest-changes"></a>Manifest File Changes
 
 In the Package Explorer open the AndroidManifest.xml of your Android project and make the following changes
 
-Add the following permissions if not already present
-
-```xml
-<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<uses-permission android:name="android.permission.INTERNET" />
-```
 
 Add the below meta tags, replacing the place holders with associated values.
 
@@ -139,11 +133,11 @@ AttributeBuilder builder = new AttributeBuilder.Builder()
 
 ## <a id="push-notifications"></a>Push Notifications
 
-Vizury sends push notifications to Android devices using [Google Cloud Messaging][GCM].
+Vizury sends push notifications to Android devices using [Firebase Cloud Messaging][FCM].
 
-## <a id="enabling-gcm"></a>Enabling GCM
+## <a id="enabling-fcm"></a>Enabling FCM
 
-If you don't have a Google API project with GCM enabled then use [this][google_developer_console] to create a Google API project. Please note down the `Project number` and the `API Server Key` as this will be required later during the integration. While generating the `API server key` make sure that you leave the IP field blank so that vizury can send push notifications.
+Create a FCM[fcm_console] project if you dont already have one. After creating your project, click the `Add App` button and select the option to add Firebase to your app. After this enter your app's package id. Follow the subsequent steps to download a `google-services.json` file. After this click on the `Cloud Messaging` Tab and note down the server key. This key has to be entered in the vizury dashboard.
 
 ## <a id="config-app"></a>Configuring Application
 
@@ -152,16 +146,12 @@ In the Package Explorer open the AndroidManifest.xml of your Android projectand 
 Add the following meta-tags
 ```xml
 <meta-data
-	android:name="Vizury.PROJECT_ID"
-	android:value="id:{PROJECT_ID}" />
-<meta-data
 	android:name="Vizury.NOTIFICATION_ICON"
 	android:resource="{NOTIFICATION_ICON}" />
 <meta-data
 	android:name="Vizury.NOTIFICATION_ICON_SMALL"
 	android:resource="{NOTIFICATION_ICON_SMALL}" />
 ```
-`PROJECT_ID` is the project number of your google API project
 
 `NOTIFICATION_ICON` is the icon tha come at the left of a notification
 
@@ -169,52 +159,24 @@ Add the following meta-tags
 
 Refer [Android Notifications][android_notifications] and [Style Icons][style_icons] for more details.
 
-Add the following permissions
+Add the following services for receiving the fcm token and messages.
 
 ```xml
-<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-<uses-permission android:name="android.permission.WAKE_LOCK" />
-<permission android:name="YOUR-APPLICATION-PACKAGE-NAME.permission.C2D_MESSAGE" 
-		android:protectionLevel="signature"/>
-<uses-permission android:name="YOUR-APPLICATION-PACKAGE-NAME.permission.C2D_MESSAGE" />
-```
-Replace `YOUR-APPLICATION-PACKAGE-NAME` with the package name of your application.
+        <service
+            android:name="com.vizury.mobile.Push.VizFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
-Add the following receivers and services
+        <service
+            android:name="com.vizury.mobile.Push.VizFirebaseInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+```
 
-`A declaration of GcmReceiver, which handles messages sent from GCM to your application. Make sure you replace the place holder {YOUR APPLICATION PACKAGE NAME} with your application package`
-```xml
-<receiver
-	android:name="com.google.android.gms.gcm.GcmReceiver"
-	android:exported="true"
-	android:permission="com.google.android.c2dm.permission.SEND">
-	<intent-filter>
-		<action android:name="com.google.android.c2dm.intent.RECEIVE" />
-		<category android:name="{YOUR APPLICATION PACKAGE NAME}" />
-	</intent-filter>
-</receiver>
-```
-`A declaration of GcmListenerService, which enables various aspects of handling messages`
-```xml
-<service
-	android:name="com.vizury.mobile.Push.VizGcmService"
-	android:exported="false" >
-	<intent-filter>
-		<action android:name="com.google.android.c2dm.intent.RECEIVE" />
-		<action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-	</intent-filter>
-</service>
-```
-`A service that extends InstanceIDListenerService, to handle the creation, rotation, and updating of registration tokens`
-```xml
-<service
-	android:name="com.vizury.mobile.Push.VizInstanceIDListener"
-	android:exported="false">
-	<intent-filter>
-		<action android:name="com.google.android.gms.iid.InstanceID"/>
-	</intent-filter>
-</service>
-```
 `Mandatory intent service for doing the heavy lifting`
 ```xml
 <service 
@@ -235,95 +197,16 @@ If your app supports offline features and you want to send the user behaviour da
 	android:value="true"/>
 ```
   	
-  	
-### <a id="fcm"></a>FCM(Firebase cloud Messaging) Compatibility
 
-If your app is using Firebase messaging for push notifications then use following steps for integration. For more details on FCM visit [Firebase Cloud Messaging][firebase-link]
+### <a id="fcm-handling"></a>Controlling fcm registration and message handling
 
-a) Remove the `GcmReceiver`, `VizGcmService` and `VizInstanceIDListener` from the manifest if added.
+If you want to control FCM registration or FCM message handling then make these changes. In the Package Explorer open the AndroidManifest.xml of your Android project.
 
-b) Remove the below meta-tag if added
-```xml
-<meta-data
-	android:name="Vizury.PROJECT_ID"
-	android:value="id:{PROJECT_ID}" />
-```
+a) Remove the `VizFirebaseMessagingService` and `VizFirebaseInstanceIdService` from the manifest if added.
 
-c) Add the below meta-tag in the manifest
-```xml
-<meta-data
-	android:name="Vizury.SKIP_GCM_REGISTRATION"
-	android:value="true" />
-```
+b) Make the following code changes
 
-d) Pass the FCM token to vizury after initializing vizury.
-
-`In your MainActivity.java inside onCreate(Bundle SavedInstance) add following code snippet`
-
-```java
-import com.vizury.mobile.VizuryHelper;
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    //your code         
-    VizuryHelper.getInstance(getApplicationContext()).init();
-    // start an intent service to get the fcm token
-    startService(new Intent(this,FCMTokenReader.class));   
-    //your code
-}
-```
-`Note: onTokenRefresh of FirebaseInstanceIdService may not be called when your app is updated from the play store. So if you are already using FCM and integrating the vizury SDK then FCM token may not be passed to vizury. For this start an IntentService like `[FCMTokenReader][FCMTokenReader] `which will get the FCM token and send it to vizury`
-
-e) Pass the FCM token to vizury when onTokenRefresh is called.
-
-```java
-public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
-    @Override
-    public void onTokenRefresh() {
-        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-        // pass the refreshed token to vizury
-        VizuryHelper.getInstance(getApplicationContext()).setGCMToken(refreshedToken);
-    }
-}
-```
-
-f) On receving any push message call the vizury api for checking and parsing the payload
-
-```java
-public class MyFirebaseMessagingService extends FirebaseMessagingService {
-    @Override
-    public void onMessageReceived(RemoteMessage message){
-        Map data = message.getData();
-        if (Utils.getInstance(getApplicationContext()).isPushFromVizury(data))
-            PushHandler.getInstance(getApplicationContext()).handleNotificationReceived(data);
-        else {
-            // your own logic goes here
-        }
-    }
-}
-```
-
-### <a id="gcm-handling"></a>Controlling gcm registration and message handling
-
-If you want to control GCM registration or GCM message handling then make these changes. In the Package Explorer open the AndroidManifest.xml of your Android project.
-
-a) Remove the `VizGcmService` and `VizInstanceIDListener` from the manifest if added.
-
-b) Remove the below meta-tag if added
-```xml
-<meta-data
-	android:name="Vizury.PROJECT_ID"
-	android:value="id:{PROJECT_ID}" />
-```
-c) Add the below meta-tag in the manifest
-```xml
-<meta-data
-	android:name="Vizury.SKIP_GCM_REGISTRATION"
-	android:value="true" />
-``` 
-
-d) Make the following code changes
-
-`Pass the GCM token to vizury. Make sure that you call this everytime GCMToken is refreshed` 
+`Pass the FCM token to vizury. Make sure that you call this everytime FCM Token is refreshed` 
 
 ```java
 VizuryHelper.getInstance(context).setGCMToken(gcmToken)
@@ -371,8 +254,9 @@ VizuryHelper.getInstance(context).setGCMRegistrationListener(myListener);
 [google_ad_id]:                 https://support.google.com/googleplay/android-developer/answer/6048248?hl=en
 [google_play_services]:         http://developer.android.com/google/play-services/setup.html
 [google_developer_console]:	https://developers.google.com/mobile/add?platform=android
+[fcm-console]:			https://console.firebase.google.com/
 [android_notifications]:	https://material.google.com/patterns/notifications.html
 [style_icons]:			https://material.google.com/style/icons.html
-[GCM]:				https://developers.google.com/cloud-messaging/
+[FCM]:				https://firebase.google.com/docs/cloud-messaging/
 [firebase-link]:		https://firebase.google.com/docs/cloud-messaging/android/client
 [FCMTokenReader]:		https://github.com/vizury/vizury-android-sdk/blob/master/examples/HelloVizury-FCM/app/src/main/java/com/vizury/hellovizuryfcm/FCMTokenReader.java
