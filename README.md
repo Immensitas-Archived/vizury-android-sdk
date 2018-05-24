@@ -14,7 +14,7 @@
   * [Push Notifications](#push-notifications)
   	* [Enabling FCM](#enabling-fcm)
   	* [Configuring Application](#config-app)
-  * [Additional configurations] (#additional-config)
+  * [Additional configurations](#additional-config)
   	* [Offline caching](#offline-caching)
   	* [Controlling fcm registration and message handling](#fcm-handling)
 
