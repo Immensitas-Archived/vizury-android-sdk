@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">HelloVizury</string>
-
-    <string name="hello_world">Sample app with basic integration</string>
-    <string name="action_settings">Settings</string>
 </resources>

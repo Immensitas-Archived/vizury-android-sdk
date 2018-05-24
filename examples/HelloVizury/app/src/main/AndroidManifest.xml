@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.vizury.hellovizury" >
-
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <permission android:name="com.vizury.hellovizury.permission.C2D_MESSAGE"
-                android:protectionLevel="signature"/>
-    <uses-permission android:name="com.vizury.hellovizury.permission.C2D_MESSAGE" />
+    package="com.vizury.hellovizury">
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/viz_logo"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+        android:roundIcon="@drawable/viz_logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,58 +17,43 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <category android:name="com.vizury.hellovizury" />
-            </intent-filter>
-        </receiver>
-
         <service
-            android:name="com.vizury.mobile.Push.VizGcmService"
-            android:exported="false" >
+            android:name="com.vizury.mobile.Push.VizFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
         <service
-            android:name="com.vizury.mobile.Push.VizInstanceIDListener"
-            android:exported="false">
+            android:name="com.vizury.mobile.Push.VizFirebaseInstanceIdService">
             <intent-filter>
-                <action android:name="com.google.android.gms.iid.InstanceID"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 
         <service
             android:name="com.vizury.mobile.Push.VizIntentService"
-            android:exported="false" />
+            android:exported="false">
+        </service>
 
-        <!--Put packages id received from vizury account manager-->
         <meta-data
             android:name="Vizury.VRM_ID"
             android:value="1" />
+
         <!--Put server url received from vizury account manager-->
         <meta-data
             android:name="Vizury.SERVER_URL"
             android:value="https://www.vizury.com/analyze/analyze.php" />
-        <!--the PROJECT_ID obtained from google developer console-->
-        <meta-data
-            android:name="Vizury.PROJECT_ID"
-            android:value="id:311225985873" />
+
         <!--drawable resource for notification icon-->
         <meta-data
             android:name="Vizury.NOTIFICATION_ICON"
-            android:resource="@mipmap/ic_launcher" />
+            android:resource="@drawable/viz_logo" />
         <!-- drawable resource for small notification icon that will appear in notification bar -->
         <meta-data
             android:name="Vizury.NOTIFICATION_ICON_SMALL"
-            android:resource="@mipmap/ic_launcher" />
-       <!--- set to true for developer mode. Change to false once going to production -->
+            android:resource="@drawable/viz_logo" />
+        <!--- set to true for developer mode. Change to false once going to production -->
         <meta-data
             android:name="Vizury.DEBUG_MODE"
             android:value="true" />
