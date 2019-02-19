@@ -39,14 +39,14 @@ Add the following dependency in your build.gradle file under app module
 implementation 'com.vizury.mobile:VizurySDK:6.1.0'
 ```
 
-Note : You may see the error 'All com.android.support libraries must use the exact same version specification' in the build.gradle of your app module. To resolve this explicitly decare the version of the support libraties to use. Like below
+`Note : You may see the error 'All com.android.support libraries must use the exact same version specification' in the build.gradle of your app module. To resolve this explicitly declare the version of the support libraties to use as shown below`
 
 Open the build.gradle file of your app and find the dependencies block. Add the following line:
 ```
-    implementation 'com.android.support:animated-vector-drawable:28.0.0'
-    implementation 'com.android.support:customtabs:28.0.0'
-    implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.android.support:support-compat:28.0.0'
+implementation 'com.android.support:animated-vector-drawable:28.0.0'
+implementation 'com.android.support:customtabs:28.0.0'
+implementation 'com.android.support:support-v4:28.0.0'
+implementation 'com.android.support:support-compat:28.0.0'
 ```
 
 ### <a id="manifest-changes"></a>Manifest File Changes
