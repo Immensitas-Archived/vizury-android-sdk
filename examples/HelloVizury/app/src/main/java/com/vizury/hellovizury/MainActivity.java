@@ -1,7 +1,7 @@
 package com.vizury.hellovizury;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +10,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.vizury.mobile.AttributeBuilder;
-import com.vizury.mobile.VizLog;
 import com.vizury.mobile.VizuryHelper;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,4 +71,5 @@ public class MainActivity extends AppCompatActivity {
 
         VizuryHelper.getInstance(getApplicationContext()).logEvent("product page", builder);
     }
+
 }

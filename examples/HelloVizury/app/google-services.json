@@ -1,58 +1,27 @@
 {
   "project_info": {
-    "project_number": "311225985873",
-    "firebase_url": "https://vizurytestapp.firebaseio.com",
-    "project_id": "vizurytestapp",
-    "storage_bucket": "vizurytestapp.appspot.com"
+    "project_number": "855265007405",
+    "firebase_url": "https://hellovizury-53cfc.firebaseio.com",
+    "project_id": "hellovizury-53cfc",
+    "storage_bucket": "hellovizury-53cfc.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:311225985873:android:5920de3503a2d18c",
-        "android_client_info": {
-          "package_name": "com.google.firebase.quickstart.fcm"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "311225985873-u05trui81oh28ashrbltu2folh7lbgvn.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA7aBCJUEZdSd5sDzSrjgqA-9c9PIrcDIE"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:311225985873:android:8cf92d5e39959ef6",
+        "mobilesdk_app_id": "1:855265007405:android:8cf92d5e39959ef6",
         "android_client_info": {
           "package_name": "com.vizury.hellovizury"
         }
       },
       "oauth_client": [
         {
-          "client_id": "311225985873-u05trui81oh28ashrbltu2folh7lbgvn.apps.googleusercontent.com",
+          "client_id": "855265007405-6n5lvre4v3gb28k66qsjuaeels0dtkh2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA7aBCJUEZdSd5sDzSrjgqA-9c9PIrcDIE"
+          "current_key": "AIzaSyBgppWphsqfxRdivEGrhO-ygKhmur_9lZI"
         }
       ],
       "services": {
@@ -62,50 +31,6 @@
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:311225985873:android:9c9104e96ac093c8",
-        "android_client_info": {
-          "package_name": "com.vizury.vizurylibraryproject"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "311225985873-a1ba2u66k3kb31a8olh9t1nei119d891.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.vizury.vizurylibraryproject",
-            "certificate_hash": "19f8055ae8c37f3cf7320b9e2695d3f2e57577ac"
-          }
-        },
-        {
-          "client_id": "311225985873-u05trui81oh28ashrbltu2folh7lbgvn.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA7aBCJUEZdSd5sDzSrjgqA-9c9PIrcDIE"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "311225985873-u05trui81oh28ashrbltu2folh7lbgvn.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
         },
         "ads_service": {
           "status": 2
