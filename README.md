@@ -7,7 +7,6 @@
   * [Example app](#example-app)
   * [Basic Integration](#basic-integration)
 	* [Getting the SDK](#sdk-get)
-	* [Add Google Play Services](#gps-get)
 	* [Manifest File Changes](#manifest-changes)
 	* [Vizury SDK Initialization](#sdk-init)
 	* [Event Logging](#event-logging)
@@ -40,16 +39,14 @@ Add the following dependency in your build.gradle file under app module
 implementation 'com.vizury.mobile:VizurySDK:6.1.0'
 ```
 
-### <a id="gps-get"></a>Add Google Play Services
-
-Since the 1st of August of 2014, apps in the Google Play Store must use the [Google Advertising ID][google_ad_id] to 
-uniquely identify devices. To allow the vizury SDK to use the Google Advertising ID, you must integrate the 
-[Google Play Services][google_play_services]. If you haven't done this yet, follow these steps:
+Note : You may see the error 'All com.android.support libraries must use the exact same version specification' in the build.gradle of your app module. To resolve this explicitly decare the version of the support libraties to use. Like below
 
 Open the build.gradle file of your app and find the dependencies block. Add the following line:
 ```
-implementation 'com.google.android.gms:play-services-base:15.0.0'
-implementation 'com.google.android.gms:play-services-ads:15.0.0'
+    implementation 'com.android.support:animated-vector-drawable:28.0.0'
+    implementation 'com.android.support:customtabs:28.0.0'
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:support-compat:28.0.0'
 ```
 
 ### <a id="manifest-changes"></a>Manifest File Changes
@@ -152,7 +149,7 @@ Project-level build.gradle (`<project>/build.gradle`):
 buildscript {
   dependencies {
     // Add this line
-    classpath 'com.google.gms:google-services:3.3.1'
+    classpath 'com.google.gms:google-services:4.2.0'
   }
 }
 ```
@@ -161,7 +158,8 @@ App-level build.gradle (`<project>/<app-module>/build.gradle`):
 ```
 dependencies {
   // Add this line
-  compile 'com.google.firebase:firebase-core:15.0.2'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
 }
 ...
 // Add to the bottom of the file
